@@ -78,6 +78,23 @@ void ForcastWidget::updateWeather()
         }
         emit weatherNow("Weather", "Temp", currentDateTime.toString("yyyy/MM/dd HH:mm:ss") + "\nGetting weather of " + city + "," + country, QPixmap(icon_path));
         QString appid = "8f3c852b69f0417fac76cd52c894ba63";
+        if(city.replace(" ", "") == ""){
+            // 如果没有设置城市
+            // 则从 wttr.in 自动获取
+            QString place_url = "https://wttr.in/?format=j1";
+            reply = manager.get(QNetworkRequest(QUrl(place_url)));
+            QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+            loop.exec();
+            QByteArray BA = reply->readAll();
+            log += place_url + "\n";
+            log += BA + "\n";
+            QJsonParseError place_json;
+            QJsonDocument place_json_document = QJsonDocument::fromJson(BA, &place_json);
+            if (place_json.error == QJsonParseError::NoError) {
+                QJsonObject nearest_area = place_json_document.object().value("nearest_area").toArray().at(0).toObject();
+                city = nearest_area.value("areaName").toArray().at(0).toObject().value("value").toString();
+            }
+        }
         surl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "," + country + "&appid=" + appid;
         reply = manager.get(QNetworkRequest(QUrl(surl)));
         QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));

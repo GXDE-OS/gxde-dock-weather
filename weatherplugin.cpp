@@ -304,7 +304,12 @@ void WeatherPlugin::set()
     vbox->addLayout(hbox);
     dialog->setLayout(vbox);
     if(dialog->exec() == QDialog::Accepted){
-        m_settings.setValue("city", lineEdit_city->text());
+        if(lineEdit_city->text() == "") {
+            m_settings.setValue("city", " ");
+        }
+        else {
+            m_settings.setValue("city", lineEdit_city->text());
+        }
         m_settings.setValue("country", comboBox_country->currentText());
         m_settings.setValue("IconTheme", comboBox_iconTheme->currentText());
         m_settings.setValue("TemperatureUnit", comboBox_TU->currentText());
