@@ -22,3 +22,5 @@ target.path = $${PREFIX}/lib/dde-dock/plugins/
 INSTALLS += target
 
 RESOURCES += res.qrc
+
+TRANSLATIONS += HTYWeather_zh.ts
