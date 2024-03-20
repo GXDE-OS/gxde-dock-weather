@@ -15,7 +15,7 @@ WeatherPlugin::WeatherPlugin(QObject *parent)
     : QObject(parent),
       m_tipsLabel(new QLabel),
       m_refershTimer(new QTimer(this)),
-      m_settings("deepin", "dde-dock-HTYWeather")
+      m_settings("deepin", "gxde-dock-HTYWeather")
 {
     m_tipsLabel->setObjectName("HTYWeather");
     m_tipsLabel->setStyleSheet("color:white; padding:0px 3px;");
@@ -108,31 +108,31 @@ const QString WeatherPlugin::itemContextMenu(const QString &itemKey)
 
     QMap<QString, QVariant> about;
     about["itemId"] = "about";
-    about["itemText"] = "About";
+    about["itemText"] = tr("About");
     about["isActive"] = true;
     items.push_back(about);
 
     QMap<QString, QVariant> set;
     set["itemId"] = "set";
-    set["itemText"] = "Set";
+    set["itemText"] = tr("Set");
     set["isActive"] = true;
     items.push_back(set);
 
     QMap<QString, QVariant> refresh;
     refresh["itemId"] = "refresh";
-    refresh["itemText"] = "Refresh";
+    refresh["itemText"] = tr("Refresh");
     refresh["isActive"] = true;
     items.push_back(refresh);
 
     QMap<QString, QVariant> satalite;
     satalite["itemId"] = "map";
-    satalite["itemText"] = "Clouds Map";
+    satalite["itemText"] = tr("Clouds Map");
     satalite["isActive"] = true;
     items.push_back(satalite);
 
     QMap<QString, QVariant> log;
     log["itemId"] = "log";
-    log["itemText"] = "Log";
+    log["itemText"] = tr("Log");
     log["isActive"] = true;
     items.push_back(log);
 
@@ -182,7 +182,7 @@ void WeatherPlugin::weatherNow(QString weather, QString temp, QString stip, QPix
 void WeatherPlugin::showMap()
 {
     QLabel *label = new QLabel;
-    label->setWindowTitle("Clouds Map");
+    label->setWindowTitle(tr("Clouds Map"));
     label->setWindowFlags(Qt::Tool);
     QString appid = "8f3c852b69f0417fac76cd52c894ba63";
     QString surl = "https://tile.openweathermap.org/map/clouds_new/10/" + m_settings.value("lat","").toString() + "/" + m_settings.value("lon","").toString()+ ".png?appid=" + appid;
@@ -220,20 +220,20 @@ void WeatherPlugin::showLog()
 void WeatherPlugin::set()
 {
     QDialog *dialog = new QDialog;
-    dialog->setWindowTitle("Set");
+    dialog->setWindowTitle(tr("Set"));
     dialog->setFixedSize(350, 200);
     QVBoxLayout *vbox = new QVBoxLayout;
     QHBoxLayout *hbox = new QHBoxLayout;
-    QLabel *label = new QLabel("City");
+    QLabel *label = new QLabel(tr("City"));
     hbox->addWidget(label);
     QLineEdit *lineEdit_city = new QLineEdit;
-    lineEdit_city->setPlaceholderText("English Only");
+    //lineEdit_city->setPlaceholderText("English Only");
     QRegExp regExp("[a-zA-Z ]+$");
     QValidator *validator = new QRegExpValidator(regExp, lineEdit_city);
-    lineEdit_city->setValidator(validator);
+    //lineEdit_city->setValidator(validator);
     lineEdit_city->setText(m_settings.value("city","").toString());
     hbox->addWidget(lineEdit_city);
-    label = new QLabel("Country");
+    label = new QLabel(tr("Country"));
     hbox->addWidget(label);
     QComboBox *comboBox_country = new QComboBox;
     QString country_codes = "AF,AX,AL,DZ,AS,AD,AO,AI,AQ,AG,AR,AM,AW,AU,AT,AZ,BS,BH,BD,BB,BY,BE,BZ,BJ,BM,BT,BO,BQ,BA,BW,BV,BR,IO,BN,BG,BF,BI,KH,CM,CA,CV,KY,CF,TD,CL,CN,CX,CC,CO,KM,CD,CG,CK,CR,CI,HR,CU,CW,CY,CZ,DK,DJ,DM,DO,EC,EG,SV,GQ,ER,EE,ET,FK,FO,FJ,FI,FR,GF,PF,TF,GA,GM,GE,DE,GH,GI,GR,GL,GD,GP,GU,GT,GG,GW,GN,GY,HT,HM,VA,HN,HK,HU,IS,IN,ID,IR,IQ,IE,IM,IL,IT,JM,JP,JE,JO,KZ,KE,KI,KP,KR,KW,KG,LA,LV,LB,LS,LR,LY,LI,LT,LU,MO,MK,MG,MW,MY,MV,ML,MT,MH,MQ,MR,MU,YT,MX,FM,MD,MC,MN,ME,MS,MA,MZ,MM,NA,NR,NP,NL,NC,NZ,NI,NG,NE,NU,NF,MP,NO,OM,PK,PW,PS,PA,PG,PY,PE,PH,PN,PL,PT,PR,QA,RE,RO,RU,RW,BL,SH,KN,LC,MF,PM,VC,WS,SM,ST,SA,SN,RS,SC,SL,SG,SX,SK,SI,SB,SO,ZA,GS,SS,ES,LK,SD,SR,SJ,SZ,SE,CH,SY,TW,TJ,TZ,TH,TL,TG,TK,TO,TT,TN,TR,TM,TC,TV,UG,UA,AE,GB,UM,US,UY,UZ,VU,VE,VN,VG,VI,WF,EH,YE,ZM,ZW";
@@ -245,7 +245,7 @@ void WeatherPlugin::set()
     hbox->addWidget(comboBox_country);
     vbox->addLayout(hbox);
     hbox = new QHBoxLayout;
-    label = new QLabel("Search your city and country in <a style='color:white;' href='https://openweathermap.org'>openweathermap.org</a>");
+    label = new QLabel(tr("Search your city and country in <a style='color:white;' href='https://openweathermap.org'>openweathermap.org</a>"));
     connect(label, &QLabel::linkActivated, [](QString url){
         QDesktopServices::openUrl(QUrl(url));
     });
@@ -275,7 +275,7 @@ void WeatherPlugin::set()
                     comboBox_iconTheme->setItemText(index, siconTheme);
                     comboBox_iconTheme->setItemIcon(index, QIcon(icon_path));
                 }else{
-                    QMessageBox MB(QMessageBox::Critical, "Error", icon_path + " does not exists !");
+                    QMessageBox MB(QMessageBox::Critical, tr("Error"), icon_path + tr(" does not exists !"));
                     MB.exec();
                 }
             }
@@ -284,7 +284,7 @@ void WeatherPlugin::set()
     hbox->addWidget(comboBox_iconTheme);
     vbox->addLayout(hbox);
     hbox = new QHBoxLayout;
-    label = new QLabel("Temperature Unit");
+    label = new QLabel(tr("Temperature Unit"));
     hbox->addWidget(label);
     QComboBox *comboBox_TU = new QComboBox;
     comboBox_TU->addItem("°C");
@@ -292,8 +292,8 @@ void WeatherPlugin::set()
     comboBox_TU->setCurrentText(m_settings.value("TemperatureUnit","°C").toString());
     hbox->addWidget(comboBox_TU);
     vbox->addLayout(hbox);
-    QPushButton *pushButton_confirm = new QPushButton("Confirm");
-    QPushButton *pushButton_cancel = new QPushButton("Cancel");
+    QPushButton *pushButton_confirm = new QPushButton(tr("Confirm"));
+    QPushButton *pushButton_cancel = new QPushButton(tr("Cancel"));
     connect(pushButton_confirm, SIGNAL(clicked()), dialog, SLOT(accept()));
     connect(pushButton_cancel, SIGNAL(clicked()), dialog, SLOT(reject()));
     hbox = new QHBoxLayout;

@@ -8,7 +8,7 @@
 
 WeatherWidget::WeatherWidget(QWidget *parent)
     : QWidget(parent),
-    m_settings("deepin", "dde-dock-HTYWeather")
+    m_settings("deepin", "gxde-dock-HTYWeather")
 {
     sw = "Weather";
     temp = "Temp";

@@ -9,9 +9,11 @@
 #include <QStandardPaths>
 #include <QTimeZone>
 
+#include <QMessageBox>
+
 ForcastWidget::ForcastWidget(QWidget *parent)
     : QWidget(parent),
-      m_settings("deepin", "dde-dock-HTYWeather")
+      m_settings("deepin", "gxde-dock-HTYWeather")
 {
     setFixedWidth(300);
     QGridLayout *layout = new QGridLayout;
@@ -38,17 +40,71 @@ ForcastWidget::ForcastWidget(QWidget *parent)
         layout->addWidget(labelTemp[i],i,1);
         if (i==0) {
             labelTemp[i]->setStyleSheet("color:white;font-size:20px;");
-            labelDate[i] = new QLabel("City");
+            labelDate[i] = new QLabel(tr("City"));
             labelDate[i]->setStyleSheet("color:white;font-size:20px;");
         } else {
             labelTemp[i]->setStyleSheet("color:white;font-size:12px;");
-            labelDate[i] = new QLabel("01-01 Mon");
+            labelDate[i] = new QLabel(tr("01-01 Mon"));
             labelDate[i]->setStyleSheet("color:white;font-size:12px;");
         }
         labelDate[i]->setAlignment(Qt::AlignCenter);
         layout->addWidget(labelDate[i],i,2);
     }
     setLayout(layout);
+}
+
+const QString ForcastWidget::GetLocalCityName()
+{
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    QString stemp = "", stip = "", surl="";
+    QString log = currentDateTime.toString("yyyy/MM/dd HH:mm:ss") + "\n";
+    QNetworkAccessManager manager;
+    QEventLoop loop;
+    QNetworkReply *reply;
+    QString city;
+    // 自动转换城市名称
+    // 从 wttr.in 自动获取
+    QString place_url = "https://wttr.in/?format=j1";
+    reply = manager.get(QNetworkRequest(QUrl(place_url)));
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+    QByteArray BA = reply->readAll();
+    log += place_url + "\n";
+    log += BA + "\n";
+    QJsonParseError place_json;
+    QJsonDocument place_json_document = QJsonDocument::fromJson(BA, &place_json);
+    if (place_json.error == QJsonParseError::NoError) {
+        QJsonObject nearest_area = place_json_document.object().value("nearest_area").toArray().at(0).toObject();
+        city = nearest_area.value("areaName").toArray().at(0).toObject().value("value").toString();
+    }
+    return city;
+}
+
+const QString ForcastWidget::GetCityEnglishName(const QString name)
+{
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    QString stemp = "", stip = "", surl="";
+    QString log = currentDateTime.toString("yyyy/MM/dd HH:mm:ss") + "\n";
+    QNetworkAccessManager manager;
+    QEventLoop loop;
+    QNetworkReply *reply;
+    QString city = name;
+    // 自动转换城市名称
+    // 从 wttr.in 自动获取
+    QString place_url = "https://wttr.in/" + name + "?format=j1";
+    reply = manager.get(QNetworkRequest(QUrl(place_url)));
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+    QByteArray BA = reply->readAll();
+    log += place_url + "\n";
+    log += BA + "\n";
+    QJsonParseError place_json;
+    QJsonDocument place_json_document = QJsonDocument::fromJson(BA, &place_json);
+    if (place_json.error == QJsonParseError::NoError) {
+        QJsonObject nearest_area = place_json_document.object().value("nearest_area").toArray().at(0).toObject();
+        city = nearest_area.value("areaName").toArray().at(0).toObject().value("value").toString();
+    }
+    return city;
 }
 
 void ForcastWidget::updateWeather()
@@ -77,24 +133,16 @@ void ForcastWidget::updateWeather()
             }
         }
         emit weatherNow("Weather", "Temp", currentDateTime.toString("yyyy/MM/dd HH:mm:ss") + "\nGetting weather of " + city + "," + country, QPixmap(icon_path));
-        QString appid = "8f3c852b69f0417fac76cd52c894ba63";
-        if(city.replace(" ", "") == ""){
-            // 如果没有设置城市
-            // 则从 wttr.in 自动获取
-            QString place_url = "https://wttr.in/?format=j1";
-            reply = manager.get(QNetworkRequest(QUrl(place_url)));
-            QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-            loop.exec();
-            QByteArray BA = reply->readAll();
-            log += place_url + "\n";
-            log += BA + "\n";
-            QJsonParseError place_json;
-            QJsonDocument place_json_document = QJsonDocument::fromJson(BA, &place_json);
-            if (place_json.error == QJsonParseError::NoError) {
-                QJsonObject nearest_area = place_json_document.object().value("nearest_area").toArray().at(0).toObject();
-                city = nearest_area.value("areaName").toArray().at(0).toObject().value("value").toString();
-            }
+        // 自动转换城市名称
+        QString place_url = "https://wttr.in/?format=j1";
+        if(city.replace(" ", "") != "") {
+            city = GetCityEnglishName(city.replace(" ", ""));
         }
+        else {
+            city = GetLocalCityName();
+        }
+        // 获取天气信息
+        QString appid = "8f3c852b69f0417fac76cd52c894ba63";
         surl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "," + country + "&appid=" + appid;
         reply = manager.get(QNetworkRequest(QUrl(surl)));
         QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));

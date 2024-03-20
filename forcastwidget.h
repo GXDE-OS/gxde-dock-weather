@@ -19,6 +19,9 @@ private:
     QLabel *labelCity, *labelRT, *labelDate[6], *labelWImg[6], *labelTemp[6];
     QSettings m_settings;
 
+    const QString GetLocalCityName();
+    const QString GetCityEnglishName(const QString name);
+
 public slots:
     void updateWeather();
 
