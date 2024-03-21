@@ -46,6 +46,8 @@ private:
     QSettings m_settings;
     ForcastWidget *forcastApplet;
     QLineEdit *lineEdit_iconPath;
+    QTranslator *m_translator;
+    void updateTranslator();
     void MBAbout();
     void showMap();
     void showLog();

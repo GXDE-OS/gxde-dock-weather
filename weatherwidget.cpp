@@ -15,6 +15,7 @@ WeatherWidget::WeatherWidget(QWidget *parent)
     pixmap = QPixmap(":icon/Default/na.png");
 }
 
+
 bool WeatherWidget::enabled()
 {
     return m_settings.value(PLUGIN_STATE_KEY, true).toBool();

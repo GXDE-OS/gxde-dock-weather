@@ -15,8 +15,11 @@ WeatherPlugin::WeatherPlugin(QObject *parent)
     : QObject(parent),
       m_tipsLabel(new QLabel),
       m_refershTimer(new QTimer(this)),
-      m_settings("deepin", "gxde-dock-HTYWeather")
+      m_settings("deepin", "gxde-dock-HTYWeather"),
+      m_translator(new QTranslator(this))
 {
+    updateTranslator();
+
     m_tipsLabel->setObjectName("HTYWeather");
     m_tipsLabel->setStyleSheet("color:white; padding:0px 3px;");
 
@@ -33,6 +36,15 @@ WeatherPlugin::WeatherPlugin(QObject *parent)
     m_refershTimer->start();
     connect(m_refershTimer, &QTimer::timeout, forcastApplet, &ForcastWidget::updateWeather);
 
+}
+
+
+void WeatherPlugin::updateTranslator()
+{
+    if (QLocale::system().name().split("_").at(0) == "zh") {
+        m_translator->load("zh_CN.qm", ":/translations/translations");
+        QCoreApplication::installTranslator(m_translator);
+    }
 }
 
 const QString WeatherPlugin::pluginName() const
@@ -234,7 +246,7 @@ void WeatherPlugin::set()
     lineEdit_city->setText(m_settings.value("city","").toString());
     hbox->addWidget(lineEdit_city);
     label = new QLabel(tr("Country"));
-    hbox->addWidget(label);
+    //hbox->addWidget(label);
     QComboBox *comboBox_country = new QComboBox;
     QString country_codes = "AF,AX,AL,DZ,AS,AD,AO,AI,AQ,AG,AR,AM,AW,AU,AT,AZ,BS,BH,BD,BB,BY,BE,BZ,BJ,BM,BT,BO,BQ,BA,BW,BV,BR,IO,BN,BG,BF,BI,KH,CM,CA,CV,KY,CF,TD,CL,CN,CX,CC,CO,KM,CD,CG,CK,CR,CI,HR,CU,CW,CY,CZ,DK,DJ,DM,DO,EC,EG,SV,GQ,ER,EE,ET,FK,FO,FJ,FI,FR,GF,PF,TF,GA,GM,GE,DE,GH,GI,GR,GL,GD,GP,GU,GT,GG,GW,GN,GY,HT,HM,VA,HN,HK,HU,IS,IN,ID,IR,IQ,IE,IM,IL,IT,JM,JP,JE,JO,KZ,KE,KI,KP,KR,KW,KG,LA,LV,LB,LS,LR,LY,LI,LT,LU,MO,MK,MG,MW,MY,MV,ML,MT,MH,MQ,MR,MU,YT,MX,FM,MD,MC,MN,ME,MS,MA,MZ,MM,NA,NR,NP,NL,NC,NZ,NI,NG,NE,NU,NF,MP,NO,OM,PK,PW,PS,PA,PG,PY,PE,PH,PN,PL,PT,PR,QA,RE,RO,RU,RW,BL,SH,KN,LC,MF,PM,VC,WS,SM,ST,SA,SN,RS,SC,SL,SG,SX,SK,SI,SB,SO,ZA,GS,SS,ES,LK,SD,SR,SJ,SZ,SE,CH,SY,TW,TJ,TZ,TH,TL,TG,TK,TO,TT,TN,TR,TM,TC,TV,UG,UA,AE,GB,UM,US,UY,UZ,VU,VE,VN,VG,VI,WF,EH,YE,ZM,ZW";
     QStringList SL;
@@ -242,7 +254,7 @@ void WeatherPlugin::set()
     SL.sort();
     comboBox_country->addItems(SL);
     comboBox_country->setCurrentText(m_settings.value("country","").toString());
-    hbox->addWidget(comboBox_country);
+    //hbox->addWidget(comboBox_country);
     vbox->addLayout(hbox);
     hbox = new QHBoxLayout;
     label = new QLabel(tr("Search your city and country in <a style='color:white;' href='https://openweathermap.org'>openweathermap.org</a>"));
@@ -310,10 +322,11 @@ void WeatherPlugin::set()
         else {
             m_settings.setValue("city", lineEdit_city->text());
         }
-        m_settings.setValue("country", comboBox_country->currentText());
+        //m_settings.setValue("country", comboBox_country->currentText());
         m_settings.setValue("IconTheme", comboBox_iconTheme->currentText());
         m_settings.setValue("TemperatureUnit", comboBox_TU->currentText());
         forcastApplet->updateWeather();
     }
     dialog->close();
 }
+

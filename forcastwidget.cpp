@@ -143,12 +143,13 @@ void ForcastWidget::updateWeather()
         }
         // 获取天气信息
         QString appid = "8f3c852b69f0417fac76cd52c894ba63";
-        if(city.replace(" ", "") != "") {
+        surl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + appid;
+        /*if(city.replace(" ", "") != "") {
             surl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "," + country + "&appid=" + appid;
         }
         else {
             surl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + appid;
-        }
+        }*/
         reply = manager.get(QNetworkRequest(QUrl(surl)));
         QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
         loop.exec();

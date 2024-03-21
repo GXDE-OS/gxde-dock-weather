@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QSettings>
+#include <QTranslator>
 
 class WeatherWidget : public QWidget
 {

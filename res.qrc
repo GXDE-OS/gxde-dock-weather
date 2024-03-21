@@ -59,4 +59,7 @@
         <file>icon/Flat/01d.png</file>
         <file>icon/custom.png</file>
     </qresource>
+    <qresource prefix="/translations">
+        <file>translations/zh_CN.qm</file>
+    </qresource>
 </RCC>
