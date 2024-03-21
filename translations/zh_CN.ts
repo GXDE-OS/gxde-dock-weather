@@ -28,6 +28,11 @@
         <source>Rain</source>
         <translation>雨</translation>
     </message>
+    <message>
+        <location filename="../forcastwidget.cpp" line="115"/>
+        <source>Snow</source>
+        <translation>雪</translation>
+    </message>
 </context>
 <context>
     <name>WeatherPlugin</name>

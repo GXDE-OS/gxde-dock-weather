@@ -112,6 +112,7 @@ void ForcastWidget::WeatherName()
     tr("Clouds");
     tr("Clear");
     tr("Rain");
+    tr("Snow");
 }
 
 void ForcastWidget::updateWeather()
