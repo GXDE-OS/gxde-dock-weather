@@ -22,6 +22,7 @@ private:
 
     const QString GetLocalCityName();
     const QString GetCityEnglishName(const QString name);
+    void WeatherName();
 
 public slots:
     void updateWeather();

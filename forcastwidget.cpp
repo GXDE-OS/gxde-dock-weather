@@ -107,6 +107,13 @@ const QString ForcastWidget::GetCityEnglishName(const QString name)
     return city;
 }
 
+void ForcastWidget::WeatherName()
+{
+    tr("Clouds");
+    tr("Clear");
+    tr("Rain");
+}
+
 void ForcastWidget::updateWeather()
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -181,7 +188,7 @@ void ForcastWidget::updateWeather()
                         stemp = QString::number(qRound(temp*1.8 + 32)) + "°F";
                     }
                     QString humidity = "RH: " + QString::number(list[i].toObject().value("main").toObject().value("humidity").toInt()) + "%";
-                    QString weather = list[i].toObject().value("weather").toArray().at(0).toObject().value("main").toString();
+                    QString weather = tr(list[i].toObject().value("weather").toArray().at(0).toObject().value("main").toString().toStdString().c_str());
                     QString icon_name = list[i].toObject().value("weather").toArray().at(0).toObject().value("icon").toString() + ".png";
                     QString icon_path = ":icon/Default/" + icon_name;
                     QString iconTheme = m_settings.value("IconTheme","").toString();

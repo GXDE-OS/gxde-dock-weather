@@ -23,4 +23,4 @@ INSTALLS += target
 
 RESOURCES += res.qrc
 
-TRANSLATIONS += HTYWeather_zh.ts
+TRANSLATIONS += translations/zh_CN.ts
