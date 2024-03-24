@@ -1,8 +1,8 @@
 # DDE_Dock_Weather
-Deepin Linux DDE-Dock weather forcast plugin.  
+GXDE Dock weather forcast plugin.  
+Old: https://github.com/sonichy/WEATHER_DDE_DOCK  
 [Releases](../../releases/)  
-install：./install.sh  
-uninstall：./uninstall.sh  
+
 ### Build Dependences
 Debian: `apt install dde-dock-dev qt5-default libdtkwidget-dev`
 
@@ -12,6 +12,19 @@ Debian: `apt install dde-dock-dev qt5-default libdtkwidget-dev`
 ### Problem
 Project ERROR: dtkwidget development package not found
 `apt-get install libdtkwidget-dev`
+
+### How To Build
+```bash
+git clone https://gitee.com/GXDE-OS/gxde-dock-weather
+cd gxde-dock-weather
+# Install build dependences
+sudo apt build-dep .
+# Install
+qmake .
+sudo make install -j4
+# Build deb
+dpkg-buildpackage -b
+```
 
 ### Icon Name Rule
 
