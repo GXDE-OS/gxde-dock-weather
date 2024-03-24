@@ -1,0 +1,15 @@
+Source: gxde-dock-weather
+Section: utils
+Priority: optional
+Maintainer: gfdgd xi <3025613752@qq.com>
+Build-Depends: debhelper-compat (= 13), qt4-qmake
+Standards-Version: 4.5.1
+Homepage: https://gitee.com/GXDE-OS/gxde-dock-weather
+Rules-Requires-Root: no
+
+Package: gxde-dock-weather
+Architecture: any
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: GXDE Dock weather forcast plugin. 
+
