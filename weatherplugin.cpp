@@ -177,7 +177,7 @@ void WeatherPlugin::invokedMenuItem(const QString &itemKey, const QString &menuI
 
 void WeatherPlugin::MBAbout()
 {
-    QMessageBox aboutMB(QMessageBox::NoIcon, "HTYWeather 5.8", "About\n\nDeepin Linux Dock Weather Plugin.\nAuthor: 海天鹰\nE-mail: sonichy@163.com\nSource: https://github.com/sonichy/WEATHER_DDE_DOCK\nAPI: https://openweathermap.org/forecast5");
+    QMessageBox aboutMB(QMessageBox::NoIcon, "HTYWeather 6.3", "About\n\nGXDE Dock Weather Plugin.\nAuthor: 海天鹰、gfdgd xi\nSource: https://gitee.com/GXDE-OS/gxde-dock-weather\nAPI: https://openweathermap.org/forecast5");
     aboutMB.setIconPixmap(QPixmap(":/icon/Default/01d.png"));
     aboutMB.exec();
 }
