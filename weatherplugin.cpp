@@ -10,6 +10,8 @@
 #include <QPushButton>
 #include <QAction>
 #include <QFileDialog>
+#include <QRadioButton>
+#include <QButtonGroup>
 
 WeatherPlugin::WeatherPlugin(QObject *parent)
     : QObject(parent),

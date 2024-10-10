@@ -35,6 +35,7 @@ public:
     const QString itemContextMenu(const QString &itemKey) override;
 
     void invokedMenuItem(const QString &itemKey, const QString &menuId, const bool checked) override;
+    void autoLocateCity();
 
 private slots:
     void weatherNow(QString weather, QString temp, QString stip, QPixmap pixmap);

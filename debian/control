@@ -2,7 +2,7 @@ Source: gxde-dock-weather
 Section: utils
 Priority: optional
 Maintainer: gfdgd xi <3025613752@qq.com>
-Build-Depends: debhelper-compat (= 13), qt5-qmake, dde-dock-dev, libdtkwidget-dev, libdtkcore-dev
+Build-Depends: debhelper-compat (= 13), qt5-qmake, dde-dock-dev, libdtkwidget2-dev, libdtkcore2-dev
 Standards-Version: 4.5.1
 Homepage: https://gitee.com/GXDE-OS/gxde-dock-weather
 Rules-Requires-Root: no
